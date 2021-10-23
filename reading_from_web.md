@@ -90,3 +90,89 @@ dynamite_df =
     stars = dynamite_stars
   )
 ```
+
+## Try some APIs
+
+Get some data from an API about water.
+
+``` r
+water_df =
+  GET("https://data.cityofnewyork.us/resource/ia2d-e54m.json") %>%
+  content("text") %>%
+  jsonlite::fromJSON() %>%
+  as_tibble()
+```
+
+BRFSS data via API
+
+``` r
+brfss_df =
+  GET("https://chronicdata.cdc.gov/resource/acme-vg9e.csv",
+      query = list("$limit" = 5000)) %>%
+  content()
+```
+
+    ## Rows: 5000 Columns: 23
+
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (16): locationabbr, locationdesc, class, topic, question, response, data...
+    ## dbl  (6): year, sample_size, data_value, confidence_limit_low, confidence_li...
+    ## lgl  (1): locationid
+
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+What about pokemon …
+
+``` r
+poke_data =
+  GET("https://pokeapi.co/api/v2/pokemon/1") %>%
+  content()
+
+poke_data[["name"]]
+```
+
+    ## [1] "bulbasaur"
+
+``` r
+poke_data[["height"]]
+```
+
+    ## [1] 7
+
+``` r
+poke_data[["abilities"]]
+```
+
+    ## [[1]]
+    ## [[1]]$ability
+    ## [[1]]$ability$name
+    ## [1] "overgrow"
+    ## 
+    ## [[1]]$ability$url
+    ## [1] "https://pokeapi.co/api/v2/ability/65/"
+    ## 
+    ## 
+    ## [[1]]$is_hidden
+    ## [1] FALSE
+    ## 
+    ## [[1]]$slot
+    ## [1] 1
+    ## 
+    ## 
+    ## [[2]]
+    ## [[2]]$ability
+    ## [[2]]$ability$name
+    ## [1] "chlorophyll"
+    ## 
+    ## [[2]]$ability$url
+    ## [1] "https://pokeapi.co/api/v2/ability/34/"
+    ## 
+    ## 
+    ## [[2]]$is_hidden
+    ## [1] TRUE
+    ## 
+    ## [[2]]$slot
+    ## [1] 3
