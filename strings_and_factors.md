@@ -1,42 +1,25 @@
----
-title: "Strings and Factors"
-author: "Wanxin Qi"
-date: "10/23/2021"
-output: github_document
----
-
-```{r setup, include = FALSE}
-library(tidyverse)
-library(rvest)
-
-knitr::opts_chunk$set(
-  fig.width = 6,
-  fig.asp = .6,
-  out.width = "90%"
-)
-
-theme_set(theme_minimal() + theme(legend.position = "bottom"))
-
-options(
-  ggplot2.continuous.colour = "viridis",
-  ggplot2.continuous.fill = "viridis"
-)
-
-scale_colour_discrete = scale_colour_viridis_d
-scale_fill_discrete = scale_fill_viridis_d
-```
-
+Strings and Factors
+================
+Wanxin Qi
+10/23/2021
 
 ## String vectors
 
-```{r}
+``` r
 string_vec = c("my", "name", "is", "jeff")
 
 str_detect(string_vec, "jeff")
+```
+
+    ## [1] FALSE FALSE FALSE  TRUE
+
+``` r
 str_replace(string_vec, "jeff", "")
 ```
 
-```{r}
+    ## [1] "my"   "name" "is"   ""
+
+``` r
 string_vec = c(
   "i think we all rule for participating",
   "i think i have been caught",
@@ -45,11 +28,17 @@ string_vec = c(
   )
 
 str_detect(string_vec, "^i think")
-str_detect(string_vec, "i think$")
-
 ```
 
-```{r}
+    ## [1]  TRUE  TRUE  TRUE FALSE
+
+``` r
+str_detect(string_vec, "i think$")
+```
+
+    ## [1] FALSE FALSE FALSE  TRUE
+
+``` r
 string_vec = c(
   "Y'all remember Pres. HW Bush?",
   "I saw a green bush",
@@ -60,7 +49,9 @@ string_vec = c(
 str_detect(string_vec,"[Bb]ush")
 ```
 
-```{r}
+    ## [1]  TRUE  TRUE  TRUE FALSE
+
+``` r
 string_vec = c(
   '7th inning stretch',
   '1st half soon to begin. Texas won the toss.',
@@ -71,7 +62,9 @@ string_vec = c(
 str_detect(string_vec, "^[0-9][a-zA-Z]")
 ```
 
-```{r}
+    ## [1]  TRUE  TRUE FALSE  TRUE
+
+``` r
 string_vec = c(
   'Its 7:11 in the evening',
   'want to go to 7-11?',
@@ -82,7 +75,9 @@ string_vec = c(
 str_detect(string_vec, "7.11")
 ```
 
-```{r}
+    ## [1]  TRUE  TRUE FALSE  TRUE
+
+``` r
 string_vec = c(
   'The CI is [2, 5]',
   ':-]',
@@ -93,21 +88,25 @@ string_vec = c(
 str_detect(string_vec, "\\[")
 ```
 
+    ## [1]  TRUE FALSE  TRUE  TRUE
 
 ## Why factors are weird
 
-```{r}
+``` r
 factor_vec = factor(c("male", "male", "female", "female"))
 
 as.numeric(factor_vec)
+```
 
+    ## [1] 2 2 1 1
+
+``` r
 factor_vec = fct_relevel(factor_vec, "male")
 ```
 
-
 ## NSDUH
 
-```{r}
+``` r
 nsduh_url = "http://samhda.s3-us-gov-west-1.amazonaws.com/s3fs-public/field-uploads/2k15StateFiles/NSDUHsaeShortTermCHG2015.htm"
 
 table_marj = 
@@ -117,9 +116,9 @@ table_marj =
   slice(-1)
 ```
 
-Let's clean this up!
+Let’s clean this up!
 
-```{r}
+``` r
 marj_df = table_marj %>%
   select(-contains("P Value")) %>%
   pivot_longer(
@@ -134,13 +133,11 @@ marj_df = table_marj %>%
     percent = as.numeric(percent)
   ) %>%
   filter(!State %in% c("Total U.S.", "Northeast", "Midwest", "South", "West"))
-
-
 ```
 
 Do dataframe stuff
 
-```{r}
+``` r
 marj_df %>%
   filter(age == "12-17") %>%
   mutate(
@@ -151,3 +148,4 @@ marj_df %>%
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
 
+<img src="strings_and_factors_files/figure-gfm/unnamed-chunk-10-1.png" width="90%" />
